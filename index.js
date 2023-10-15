@@ -34,7 +34,6 @@ io.on('connection', (socket) => {
     }, 1000);
 });
 
-
 server.listen(PORT, () => {
     console.log(`server running at http://localhost:${config.server.port}`.green);
 });
