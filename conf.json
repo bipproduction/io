@@ -1,0 +1,13 @@
+{
+    "server": {
+        "port": 3002,
+        "version": "1.0.0"
+    },
+    "io": {
+        "path": [
+            "satu",
+            "dua",
+            "tiga"
+        ]
+    }
+}
