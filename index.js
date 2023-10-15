@@ -11,7 +11,11 @@ require('colors')
 const app = express();
 app.use(cors())
 app.use(express.static('public'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 const server = createServer(app);
+let sock;
 const io = new Server(server, {
     allowEIO3: true,
     cors: {
@@ -21,18 +25,29 @@ const io = new Server(server, {
     }
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(join(__dirname, 'index.html'));
-});
-
 io.on('connection', (socket) => {
+    sock = socket
     socket.on('server', (data) => {
         console.log(data)
     })
+
     setTimeout(() => {
         socket.emit("client", "from_server")
     }, 1000);
 });
+
+app.get('/', (req, res) => {
+    res.sendFile(join(__dirname, 'index.html'));
+});
+
+app.post('/io', (req, res) => {
+    if (sock) {
+        sock.emit('io', req.body)
+    }
+    return res.status(200).send("ok")
+})
+
+
 
 server.listen(PORT, () => {
     console.log(`server running at http://localhost:${config.server.port}`.green);
