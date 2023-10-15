@@ -1,6 +1,6 @@
 {
     "server": {
-        "port": 3002,
+        "port": 5012,
         "version": "1.0.0"
     },
     "io": {
