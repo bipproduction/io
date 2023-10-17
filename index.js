@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 const server = createServer(app);
 let sock;
 const io = new Server(server, {
-    allowEIO3: true,
+    // allowEIO3: true,
     cors: {
         origin: "*",
         credentials: true,
@@ -44,7 +44,10 @@ app.post('/io', (req, res) => {
     if (sock) {
         sock.emit('io', req.body)
     }
-    return res.status(200).send("ok")
+    // console.log(req.body)
+    return res.status(200).json({
+        ...req.body
+    })
 })
 
 
