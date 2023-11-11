@@ -41,8 +41,16 @@ app.get('/', (req, res) => {
 });
 
 app.post('/io', (req, res) => {
+    const body = req.body
     if (sock) {
-        sock.emit('io', req.body)
+
+        // const d =  {
+        //     "id": "",
+        //     "path": "",
+        //     "data": ""
+        // }
+
+        sock.emit(req.body.id, req.body)
     }
     // console.log(req.body)
     return res.status(200).json({
