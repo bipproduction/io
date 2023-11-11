@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 const server = createServer(app);
 let sock;
 const io = new Server(server, {
-    // allowEIO3: true,
+    allowEIO3: true,
     cors: {
         origin: "*",
         credentials: true,
