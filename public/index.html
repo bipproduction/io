@@ -22,7 +22,7 @@
     </div>
     <script>
 
-        const url = `${window.location.host}/${window.location.port}`
+        const url = window.location.port === 3001 ? `localhost:${window.location.port}` : `${window.location.host}/${window.location.port}`
         const wss = new WebSocket("ws://" + url);
 
         wss.onopen = () => {
@@ -30,7 +30,7 @@
         }
 
         wss.onmessage = (event) => {
-            const dataReceived = JSON.parse(event.data); // Mengonversi string JSON menjadi objek
+            const dataReceived = JSON.parse(event.data);
             $("#content").append(`<div>${dataReceived.data}</div>`)
         };
 
