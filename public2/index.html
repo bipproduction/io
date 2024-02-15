@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <pre>
+        <div id="con"></div>
+    </pre>
+    <div id="test"></div>
+
+    <script>
+        const socket = io("https://io.wibudev.com");
+
+        setTimeout(() => {
+            socket.emit("server", "from_client")
+        }, 100)
+
+
+        socket.on("connect", () => {
+            console.log("connect")
+        })
+
+        socket.on('test', data => {
+            $("#test").text(JSON.stringify(data))
+        })
+
+        socket.on("client", (data) => {
+            // console.log(data)
+            document.getElementById("con").innerHTML =  JSON.stringify(data, null, 2)
+        })
+    </script>
+</body>
+
+</html>
