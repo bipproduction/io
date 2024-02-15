@@ -6,24 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-        setTimeout(() => {
-            socket.emit("server", "from_client")
-        }, 1000)
-
-        socket.on("client", (data) => {
-            console.log(data)
-            document.getElementById("con").innerHTML = "message: " + data
-        })
-    </script>
 </head>
 
 <body>
 
-    <div id="con"></div>
+    <pre>
+        <div id="con"></div>
+    </pre>
+    <div id="test"></div>
+
+    <script>
+        const socket = io("http://localhost:3000");
+
+        setTimeout(() => {
+            socket.emit("server", "from_client")
+        }, 100)
+
+
+        socket.on("connect", () => {
+            console.log("connect")
+        })
+
+        socket.on('test', data => {
+            $("#test").text(JSON.stringify(data))
+        })
+
+        socket.on("client", (data) => {
+            // console.log(data)
+            document.getElementById("con").innerHTML =  JSON.stringify(data, null, 2)
+        })
+    </script>
 </body>
 
 </html>
