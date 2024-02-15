@@ -22,8 +22,8 @@
     </div>
     <script>
 
-        const url = window.location.port === 3001 ? `localhost:${window.location.port}` : `${window.location.host}/${window.location.port}`
-        const wss = new WebSocket("ws://" + url);
+        const url = window.location.port === 3001 ? `ws://localhost:${window.location.port}` : `wss://${window.location.host}/${window.location.port}`
+        const wss = new WebSocket(url);
 
         wss.onopen = () => {
             console.log("wss connect")
@@ -33,7 +33,7 @@
             const dataReceived = JSON.parse(event.data);
             $("#content").append(`<div>${dataReceived.data}</div>`)
         };
-        
+
 
         $("#btn").click(() => {
             const data = $("#input").val()
