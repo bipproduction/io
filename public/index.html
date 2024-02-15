@@ -33,6 +33,7 @@
             const dataReceived = JSON.parse(event.data);
             $("#content").append(`<div>${dataReceived.data}</div>`)
         };
+        
 
         $("#btn").click(() => {
             const data = $("#input").val()
