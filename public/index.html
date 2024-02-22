@@ -21,9 +21,10 @@
         </div>
     </div>
     <script>
-        const url = window.location.port === 3001 ? `ws://localhost:${window.location.port}` : `wss://${window.location.host}/${window.location.port}`
-        const wss = new WebSocket(url);
-        function connectWebSocket(wss) {
+        let wss;
+        function connectWebSocket() {
+            const url = window.location.port === 3001 ? `ws://localhost:${window.location.port}` : `wss://${window.location.host}/${window.location.port}`
+            wss = new WebSocket(url);
             wss.onopen = () => {
                 console.log("wss connect")
             }
@@ -39,12 +40,12 @@
                 // auto reconnect
                 setTimeout(() => {
                     console.log("auto reconnect websockwet")
-                    connectWebSocket(wss)
+                    connectWebSocket()
                 }, 1000)
             };
         }
 
-        connectWebSocket(wss)
+        connectWebSocket()
 
         $("#btn").click(() => {
             const data = $("#input").val()
