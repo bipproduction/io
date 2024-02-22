@@ -37,7 +37,8 @@
                 console.log("wss disconnect")
 
                 // auto reconnect
-                return setTimeout(() => {
+                setTimeout(() => {
+                    console.log("auto reconnect websockwet")
                     connectWebSocket(wss)
                 }, 1000)
             };
