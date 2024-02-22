@@ -21,19 +21,29 @@
         </div>
     </div>
     <script>
-
         const url = window.location.port === 3001 ? `ws://localhost:${window.location.port}` : `wss://${window.location.host}/${window.location.port}`
         const wss = new WebSocket(url);
+        function connectWebSocket(wss) {
+            wss.onopen = () => {
+                console.log("wss connect")
+            }
 
-        wss.onopen = () => {
-            console.log("wss connect")
+            wss.onmessage = (event) => {
+                const dataReceived = JSON.parse(event.data);
+                $("#content").append(`<div>${dataReceived.data}</div>`)
+            };
+
+            wss.onclose = () => {
+                console.log("wss disconnect")
+
+                // auto reconnect
+                return setTimeout(() => {
+                    connectWebSocket(wss)
+                }, 1000)
+            };
         }
 
-        wss.onmessage = (event) => {
-            const dataReceived = JSON.parse(event.data);
-            $("#content").append(`<div>${dataReceived.data}</div>`)
-        };
-
+        connectWebSocket(wss)
 
         $("#btn").click(() => {
             const data = $("#input").val()
