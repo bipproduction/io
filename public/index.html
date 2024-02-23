@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chat Server</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <style>
         body {
             background-color: darkgrey;
@@ -14,21 +18,25 @@
 </head>
 
 <body>
-    <div style="background-color: antiquewhite; margin-bottom: 10px;">
+    <div
+        style="background-color: antiquewhite; margin-bottom: 10px; display: flex; flex-direction: row; flex-wrap: wrap;">
         <div style="width: fit-content; padding: 8px; ">
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <input id="input" />
+                <input id="input" placeholder="text here" />
                 <button id="btn">Kirim</button>
             </div>
         </div>
+        <div style="padding: 8px; width: 300px;">
+            Tekan kirim atau enter aja
+        </div>
     </div>
     <div style="display: flex; flex-direction: row; gap: 10px; ">
-        <div style="padding: 8px; width: 50%; background-color: antiquewhite; max-height: 90vh; overflow-y: scroll;">
+        <div
+            style="padding: 8px; background-color: antiquewhite; width: 50%;  color: cadetblue; max-height: 70vh; overflow-y: scroll;">
             <div style="text-wrap: wrap; word-wrap: break-word; color: cadetblue;" id="content"></div>
         </div>
-        <div
-            style=" padding: 8px; background-color: antiquewhite; width: 50%;  color: cadetblue; max-height: 90vh; overflow-y: scroll;">
-            <pre id="json" style=" text-wrap: wrap; word-wrap: break-word;">
+        <div style=" padding: 8px; background-color: antiquewhite; width: 50%;  max-height: 70vh; overflow-y: scroll;">
+            <pre id="json" style=" text-wrap: wrap; word-wrap: break-word; color: cadetblue;">
         </pre>
         </div>
     </div>
@@ -43,14 +51,17 @@
                 console.log("wss connect")
             }
 
+            let id = 1
             wss.onmessage = (event) => {
                 const tanggal = new Date().toLocaleString()
                 const dataReceived = JSON.parse(event.data);
                 $("#content").prepend(`<div>[${tanggal}] ${dataReceived.data}</div>`)
-                list_data.push(dataReceived)
-                const reverse_list = list_data.reverse()
+                dataReceived.id = id
+                list_data.unshift(dataReceived)
+                // const reverse_list = list_data.reverse()
 
-                $("#json").text(JSON.stringify(reverse_list, null, 2))
+                $("#json").text(JSON.stringify(list_data, null, 2))
+                id++;
             };
 
             wss.onclose = () => {
