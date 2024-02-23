@@ -6,21 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: darkgrey;
+        }
+    </style>
 </head>
 
 <body>
-    <div style="display: flex; flex-direction: row; gap: 10px">
-        <div style="padding: 8px; width: 300px;">
-            <div style="text-wrap: wrap; word-wrap: break-word;" id="content"></div>
-        </div>
-        <div style="width: 300px;">
+    <div style="background-color: antiquewhite; margin-bottom: 10px;">
+        <div style="width: fit-content; padding: 8px; ">
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <input id="input" />
                 <button id="btn">Kirim</button>
             </div>
         </div>
-        <pre style="padding: 8px; background-color: black; color: aliceblue; text-wrap: wrap; word-wrap: break-word;"
-            id="json"></pre>
+    </div>
+    <div style="display: flex; flex-direction: row; gap: 10px; ">
+        <div style="padding: 8px; width: 50%; background-color: antiquewhite; max-height: 90vh; overflow-y: scroll;">
+            <div style="text-wrap: wrap; word-wrap: break-word; color: cadetblue;" id="content"></div>
+        </div>
+        <div
+            style=" padding: 8px; background-color: antiquewhite; width: 50%;  color: cadetblue; max-height: 90vh; overflow-y: scroll;">
+            <pre id="json" style=" text-wrap: wrap; word-wrap: break-word;">
+        </pre>
+        </div>
     </div>
     <script>
         let wss;
@@ -36,9 +46,11 @@
             wss.onmessage = (event) => {
                 const tanggal = new Date().toLocaleString()
                 const dataReceived = JSON.parse(event.data);
-                $("#content").append(`<div>[${tanggal}] ${dataReceived.data}</div>`)
+                $("#content").prepend(`<div>[${tanggal}] ${dataReceived.data}</div>`)
                 list_data.push(dataReceived)
-                $("#json").text(JSON.stringify(list_data, null, 2))
+                const reverse_list = list_data.reverse()
+
+                $("#json").text(JSON.stringify(reverse_list, null, 2))
             };
 
             wss.onclose = () => {
