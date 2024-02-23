@@ -11,7 +11,7 @@
 <body>
     <div style="display: flex; flex-direction: row; gap: 10px">
         <div style="padding: 8px; width: 300px;">
-            <div id="content"></div>
+            <div style="text-wrap: wrap; word-wrap: break-word;" id="content"></div>
         </div>
         <div style="width: 300px;">
             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -19,19 +19,26 @@
                 <button id="btn">Kirim</button>
             </div>
         </div>
+        <pre style="padding: 8px; background-color: black; color: aliceblue; text-wrap: wrap; word-wrap: break-word;"
+            id="json"></pre>
     </div>
     <script>
         let wss;
+        let list_data = [];
         function connectWebSocket() {
-            const url = window.location.port === 3001 ? `ws://localhost:${window.location.port}` : `wss://${window.location.host}/${window.location.port}`
+            const local = window.location.hostname === "localhost"
+            const url = `${local ? "ws" : "wss"}://${window.location.host}`
             wss = new WebSocket(url);
             wss.onopen = () => {
                 console.log("wss connect")
             }
 
             wss.onmessage = (event) => {
+                const tanggal = new Date().toLocaleString()
                 const dataReceived = JSON.parse(event.data);
-                $("#content").append(`<div>${dataReceived.data}</div>`)
+                $("#content").append(`<div>[${tanggal}] ${dataReceived.data}</div>`)
+                list_data.push(dataReceived)
+                $("#json").text(JSON.stringify(list_data, null, 2))
             };
 
             wss.onclose = () => {
@@ -45,12 +52,14 @@
             };
         }
 
-        connectWebSocket()
+        $(document).ready(() => {
+            connectWebSocket()
+        })
 
         $("#btn").click(kirim)
 
         // detect enter
-        $("#btn").keypress((event) => {
+        $("#input").keypress((event) => {
             if (event.which === 13) {
                 kirim()
             }
@@ -58,8 +67,11 @@
 
         function kirim() {
             const data = $("#input").val()
+            // check empty aler no empty
+            if (!data) return alert("no empty")
             wss.send(JSON.stringify({ data }))
             $("#input").val("")
+
         }
     </script>
 </body>
