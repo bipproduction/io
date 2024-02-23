@@ -47,11 +47,20 @@
 
         connectWebSocket()
 
-        $("#btn").click(() => {
+        $("#btn").click(kirim)
+
+        // detect enter
+        $("#btn").keypress((event) => {
+            if (event.which === 13) {
+                kirim()
+            }
+        })
+
+        function kirim() {
             const data = $("#input").val()
             wss.send(JSON.stringify({ data }))
             $("#input").val("")
-        })
+        }
     </script>
 </body>
 
