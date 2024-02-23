@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Server</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <style>
@@ -31,13 +31,19 @@
         </div>
     </div>
     <div style="display: flex; flex-direction: row; gap: 10px; ">
-        <div
-            style="padding: 8px; background-color: antiquewhite; width: 50%;  color: cadetblue; max-height: 70vh; overflow-y: scroll;">
-            <div style="text-wrap: wrap; word-wrap: break-word; color: cadetblue;" id="content"></div>
+        <div style="padding: 8px; background-color: antiquewhite; width: 50%;">
+            <h3>Data Time</h3>
+            <div style="overflow-y: scroll;  max-height: 70vh; ">
+                <div style="text-wrap: wrap; word-wrap: break-word; color: cadetblue;" id="content"></div>
+            </div>
         </div>
-        <div style=" padding: 8px; background-color: antiquewhite; width: 50%;  max-height: 70vh; overflow-y: scroll;">
-            <pre id="json" style=" text-wrap: wrap; word-wrap: break-word; color: cadetblue;">
-        </pre>
+        <div style=" padding: 8px; background-color: antiquewhite; width: 50%;   ">
+            <h3>Data Json</h3>
+            <div style="overflow-y: scroll; max-height: 70vh;">
+                <pre id="json" style=" text-wrap: wrap; word-wrap: break-word; color: cadetblue;"></pre>
+            </div>
+
+            </pre>
         </div>
     </div>
     <script>
