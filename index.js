@@ -3,6 +3,7 @@ const express = require('express');
 const expressWs = require('express-ws');
 const path = require('path')
 const WebSocket = require('ws');
+const yargs = require('yargs')
 
 const app = express();
 expressWs(app);
@@ -166,7 +167,31 @@ app.get('/count-message/:channelId', async (req, res) => {
 })
 
 // Mulai server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => {
+//     console.log(`Server listening on port ${PORT}`);
+// });
+
+
+yargs
+    .command(
+        "start",
+        "start",
+        yargs => yargs.options({
+            "port": {
+                alias: "p",
+                default: 3000
+            }
+        }),
+        funStart
+    )
+    .recommendCommands()
+    .demandCommand(1)
+    .parse(process.argv.splice(2))
+
+async function funStart(argv) {
+
+    app.listen(argv.p, () => {
+        console.log(`Server listening on port ${argv.p}`);
+    });
+}
