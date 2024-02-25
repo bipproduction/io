@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <script src="./script.js" type="module"></script>
     <style>
         body {
             background-color: darkgrey;
@@ -20,15 +20,30 @@
 <body>
     <div
         style="background-color: antiquewhite; margin-bottom: 10px; display: flex; flex-direction: row; flex-wrap: wrap;">
-        <div style="width: fit-content; padding: 8px; ">
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <input id="input" placeholder="text here" />
-                <button id="btn">Kirim</button>
-            </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px;">
+            <h3>Kirim Pesan</h3>
+            <input id="input" placeholder="text here" />
+            <button id="btn">Kirim</button>
         </div>
-        <div style="padding: 8px; width: 300px;">
-            Tekan kirim atau enter aja
+        <div style="padding: 8px; display: flex; flex-direction: column; gap: 8px;">
+            <h3>Create Channel</h3>
+            <input id="channel" placeholder="channel name" />
+            <button id="create_channel">Create</button>
         </div>
+        <div style="padding: 8px; display: flex; flex-direction: column; gap: 8px; max-height: 200px; max-width:300px;">
+            <h3>List Channel</h3>
+            <ol id="list_channel" style="overflow-y: scroll;"></ol>
+        </div>
+        <div style="padding: 8px; display: flex; flex-direction: column; gap: 8px; width: 200px;">
+            <h3>Info</h3>
+            <!-- <div id="info"></div> -->
+            <div id="message_count"></div>
+        </div>
+        <div style="padding: 8px; display: flex; flex-direction: column; gap: 8px; width: 200px;">
+            <h3>Document</h3>
+            <a href="/document.md">Document</a>
+        </div>
+
     </div>
     <div style="display: flex; flex-direction: row; gap: 10px; ">
         <div style="padding: 8px; background-color: antiquewhite; width: 50%;">
@@ -46,63 +61,7 @@
             </pre>
         </div>
     </div>
-    <script>
-        let wss;
-        let list_data = [];
-        function connectWebSocket() {
-            const local = window.location.hostname === "localhost"
-            const url = `${local ? "ws" : "wss"}://${window.location.host}`
-            wss = new WebSocket(url);
-            wss.onopen = () => {
-                console.log("wss connect")
-            }
 
-            let id = 1
-            wss.onmessage = (event) => {
-                const tanggal = new Date().toLocaleString()
-                const dataReceived = JSON.parse(event.data);
-                $("#content").prepend(`<div>[${tanggal}] ${dataReceived.data}</div>`)
-                dataReceived.id = id
-                list_data.unshift(dataReceived)
-                // const reverse_list = list_data.reverse()
-
-                $("#json").text(JSON.stringify(list_data, null, 2))
-                id++;
-            };
-
-            wss.onclose = () => {
-                console.log("wss disconnect")
-
-                // auto reconnect
-                setTimeout(() => {
-                    console.log("auto reconnect websockwet")
-                    connectWebSocket()
-                }, 1000)
-            };
-        }
-
-        $(document).ready(() => {
-            connectWebSocket()
-        })
-
-        $("#btn").click(kirim)
-
-        // detect enter
-        $("#input").keypress((event) => {
-            if (event.which === 13) {
-                kirim()
-            }
-        })
-
-        function kirim() {
-            const data = $("#input").val()
-            // check empty aler no empty
-            if (!data) return alert("no empty")
-            wss.send(JSON.stringify({ data }))
-            $("#input").val("")
-
-        }
-    </script>
 </body>
 
 </html>
