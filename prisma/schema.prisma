@@ -11,24 +11,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Channel {
-  id        String    @id @default(cuid())
+// Model untuk menyimpan informasi topik
+model Topic {
+  id        Int       @id @default(autoincrement())
   name      String    @unique
-  isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Message   Message[]
+  // Relasi dengan pesan
+  messages  Message[]
 }
 
+// Model untuk menyimpan pesan
 model Message {
-  id          String   @id @default(cuid())
-  content     String?  @db.Text
-  extended    String?  @db.Text
-  channel     Channel  @relation(fields: [channelId], references: [id])
-  channelId   String
-  channelName String
-  category    String
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relasi dengan topik
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   Int
 }
