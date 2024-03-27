@@ -15,7 +15,7 @@ module.exports = async function mqtt() {
                     }
                 }),
             async argv => {
-                const server = createServer(aedes)
+                const server = createServer(aedes, {ws: true})
 
                 // Tambahkan header untuk mengizinkan CORS
                 server.on('request', (req, res) => {
